@@ -1,0 +1,114 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserRole__1 = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserRole = 
+ variant {
+   student;
+   teacher;
+ };
+type UserProfile = 
+ record {
+   createdAt: Timestamp;
+   email: text;
+   name: text;
+   "principal": UserId;
+   role: UserRole;
+ };
+type UserId = principal;
+type Timestamp = int;
+type SessionId = text;
+type QrSession = 
+ record {
+   courseName: text;
+   createdAt: Timestamp;
+   expiresAt: Timestamp;
+   sessionId: SessionId;
+   teacherId: UserId;
+   token: text;
+ };
+type ExternalBlob = blob;
+type AttendanceStatus = 
+ variant {
+   absent;
+   present;
+ };
+type AttendanceStats = 
+ record {
+   attendedPeriods: nat;
+   percentage: float64;
+   studentId: UserId;
+   totalPeriods: nat;
+ };
+type AttendanceRecord = 
+ record {
+   qrToken: text;
+   sessionId: SessionId;
+   status: AttendanceStatus;
+   studentId: UserId;
+   timestamp: Timestamp;
+ };
+type AssignmentInput = 
+ record {
+   description: text;
+   dueDate: Timestamp;
+   fileKey: ExternalBlob;
+   title: text;
+ };
+type AssignmentId = nat;
+type Assignment = 
+ record {
+   description: text;
+   dueDate: Timestamp;
+   fileKey: ExternalBlob;
+   id: AssignmentId;
+   teacherId: UserId;
+   title: text;
+   uploadedAt: Timestamp;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  assignCallerUserRole: (user: principal, role: UserRole__1) -> ();
+  createAssignment: (input: AssignmentInput) -> (Assignment);
+  createQrSession: (courseName: text) -> (QrSession);
+  deleteAssignment: (id: AssignmentId) -> (bool);
+  getActiveQrSession: () -> (opt QrSession) query;
+  getAllStudentAttendanceStats: () -> (vec AttendanceStats) query;
+  getAssignment: (id: AssignmentId) -> (opt Assignment) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole__1) query;
+  getMyAttendance: () -> (vec AttendanceRecord) query;
+  getMyAttendanceStats: () -> (AttendanceStats) query;
+  getSessionAttendance: (sessionId: SessionId) ->
+   (vec AttendanceRecord) query;
+  getUserProfile: (user: principal) -> (opt UserProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  listAllProfiles: () -> (vec UserProfile) query;
+  listAssignments: () -> (vec Assignment) query;
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  submitAttendance: (sessionId: SessionId, token: text) -> (bool);
+}

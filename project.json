@@ -1,0 +1,29 @@
+{
+  "overview": "A modern Smart Attendance Management System for colleges featuring role-based dashboards for students and teachers, dynamic QR-based attendance with anti-proxy 10-second rotation, assignment management with file uploads, and attendance analytics with interactive charts — all wrapped in a premium glassmorphism UI with dark/light mode.",
+  "features": [
+    "Internet Identity login with student/teacher role selection",
+    "Dynamic QR attendance — rotates every 10 seconds with anti-proxy validation",
+    "Student dashboard with attendance percentage and period tracking",
+    "Teacher dashboard with class monitoring and QR management",
+    "Assignment upload and download via file storage",
+    "Attendance analytics with interactive Recharts charts",
+    "Dark mode / light mode toggle",
+    "Responsive glassmorphism UI with sidebar navigation",
+    "Protected routes with role-based access control",
+    "Real-time dashboard polling updates"
+  ],
+  "category": "education",
+  "tags": [
+    "attendance",
+    "education",
+    "college",
+    "qr-code",
+    "dashboard",
+    "teacher",
+    "student",
+    "analytics",
+    "assignments",
+    "glassmorphism"
+  ],
+  "last_updated": "2026-05-17T10:17:41.362Z"
+}
